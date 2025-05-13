@@ -1,5 +1,5 @@
 # Ex.08 Design of Interactive Image Gallery
-# Date:10.05.2025
+# Date:13.05.2025
 # AIM:
 To design a web application for an inteactive image gallery with minimum five images.
 
@@ -23,91 +23,229 @@ Validate the HTML and CSS code.
 Publish the website in the given URL.
 
 # PROGRAM :
-index.html
 ```
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Photo Gallery</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* Global Reset */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(45deg, #ff6b6b, #f06595, #ab83c8, #6a4c93, #ff9f1c);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Title Styling */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+      margin-bottom: 50px;
+      z-index: 1;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Gallery Container */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 80%;
+      margin: 0 auto;
+      z-index: 1;
+      animation: galleryFadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes galleryFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Gallery Item */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item h2 {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 15px;
+      font-size: 1.3rem;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Overlay Styling */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2.5rem;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .close:hover {
+      transform: rotate(90deg);
+      color: #ff4081;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>Interactive Photo Gallery</h1>
-    <div id="image">Hover over an image below to display here.</div>
-    
-    <div class="gallery">
-        <img class = "preview" alt = "Night Sky" src = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" onmouseover = "upDate(this)" onmouseout = "unDo()">
-	<img class = "preview" alt = "Rose" src = "https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" onmouseover = "upDate(this)" onmouseout = "unDo()">
-	<img class = "preview" src = "https://images.pexels.com/photos/2130610/pexels-photo-2130610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt = "Paris" onmouseover = "upDate(this)" onmouseout = "unDo()">
-        <img class = "preview" alt = "Turtle" src = "https://images.pexels.com/photos/5277693/pexels-photo-5277693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" onmouseover = "upDate(this)" onmouseout = "unDo()">
-	<img class = "preview" alt = "Cute Puppy" src = "https://images.pexels.com/photos/3687770/pexels-photo-3687770.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" onmouseover = "upDate(this)" onmouseout = "unDo()">
-	<img class = "preview" src = "https://images.pexels.com/photos/1648377/pexels-photo-1648377.jpeg?auto=compress&cs=tinysrgb&w=600" alt = "Baby" onmouseover = "upDate(this)" onmouseout = "unDo()">
+
+  <h1>Image Gallery</h1>
+
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="image1.jpg.png" alt="Image 1">
     </div>
-    <script src="script.js"></script>
+    <div class="gallery-item">
+      <img src="image2.jpg.png" alt="Image 2">
+    </div>
+    <div class="gallery-item">
+      <img src="image3.jpg.png" alt="Image 3">
+    </div>
+    <div class="gallery-item">
+      <img src="image4.jpg.png" alt="Image 4">
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <span class="close" id="close">&times;</span>
+    <img id="overlayImage" src="" alt="Overlay Image">
+  </div>
+
+  <script>
+    const galleryItems = document.querySelectorAll('.gallery-item img');
+    const overlay = document.getElementById('overlay');
+    const overlayImage = document.getElementById('overlayImage');
+    const closeBtn = document.getElementById('close');
+
+    galleryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        overlayImage.src = item.src;
+        overlay.classList.add('active');
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
+  </script>
+
 </body>
 </html>
 ```
-style.css
-```
-body{
-    margin: 2%;
-    border: 1px solid black;
-    background-color: #b3b3b3;
-}
-#image{
-line-height:100px;
-    width: 355px;
-height: 170px;
-    border:5px solid black;
-    margin:0 auto;
-background-color: #8e68ff;
-background-image: url('');
-background-repeat: no-repeat;
-color:#FFFFFF;
-text-align: center;
-background-size: 100%;
-margin-bottom:25px;
-font-size: 120%;
-}
-.preview{
-    width:10%;
-    margin-left:17%;
-border: 9px solid black;
-}
-img{
-    width:95%;
-}
-```
-script.js
-```
-// Reference to the image container
-const imageDiv = document.getElementById('image');
-const originalImageUrl = ''; // Set this to the URL of your original image
-const originalText = "Hover over an image below to display here."; // Original text
-
-function upDate(previewPic) {
-    // Change the background image to the source of the hovered image
-    imageDiv.style.backgroundImage = `url('${previewPic.src}')`;
-    
-    // Update the text to the alt text of the hovered image
-    imageDiv.innerHTML = previewPic.alt;
-}
-
-function unDo() {
-    // Reset the background image to the original URL
-    imageDiv.style.backgroundImage = `url('${originalImageUrl}')`; // Use the original image URL here
-    
-    // Change the text back to the original text
-    imageDiv.innerHTML = originalText;
-}
-```
 # OUTPUT:
-![Screenshot 2024-12-13 190137](https://github.com/user-attachments/assets/bc710ca7-4f26-4c7b-897a-e6aa0d5e9707)
-![Screenshot 2024-12-19 143727](https://github.com/user-attachments/assets/eae374ce-5a40-4866-8c5b-795227b260e8)
-![Screenshot 2024-12-19 143753](https://github.com/user-attachments/assets/1b6d425b-8fde-4bdc-a7e9-6aac669dafd1)
 
+
+![alt text](<Screenshot 2025-05-06 111015.png>)
+![alt text](<Screenshot 2025-05-06 111031.png>)
+![alt text](<Screenshot 2025-05-06 111043.png>)
+![alt text](<Screenshot 2025-05-06 111053.png>)
+![alt text](<Screenshot 2025-05-06 111104.png>)
 
 
 # RESULT:
